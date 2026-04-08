@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hogwarts Case Study </title>
+
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: rgb(182, 138, 181);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; 
+        }
+
+        /* Chat Container */
+        .chat-container {
+            width: 100%;
+            max-width: 700px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }  
+        
+        /* Header */
+        .chat-header {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* Chat Body */
+        .chat-body {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            border-bottom: 1px solid #eee;
+            max-height: 400px;
+        }
+
+        /* Input Area */
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            background: #f9f9f9;
+            border-top: 1px solid #eee;
+        }
+
+        .chat-input input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .chat-input button {
+            margin-left: 10px;
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .chat-input button:hover {
+            background: #0056b3;
+        }
+
+        /* Messages */
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message.user {
+            align-items: flex-end;
+        }
+
+        .message.bot {
+            align-items: flex-start;
+        }
+
+        .message p {
+            padding: 10px 15px;
+            border-radius: 12px;
+            max-width: 70%;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .message.user p {
+            background: #007bff;
+            color: white;
+            border-radius: 12px 12px 0 12px;
+        }
+
+        .message.bot p {
+            background: #f1f1f1;
+            color: #333;
+            border-radius: 12px 12px 12px 0;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: #333;
+            color: #fff;
+            padding: 10px;
+            border-radius: 8px;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            max-width: 70%;
+        }
+
+        /* Loader */
+        .loader {
+            display: none;
+            border: 4px solid #f1f1f1;
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 10px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="chat-container">
+
+    <!-- HEADER -->
+    <div class="chat-header">
+        Suha AI ChatBot
+    </div>
+
+    <!-- CHAT BODY -->
+    <div class="chat-body">
+
+        <!-- BOT MESSAGE (example / history) -->
+        <div class="message bot">
+            <p>Hello, What is the thing that we cook today?</p>
+        </div>
+
+        <!-- USER MESSAGE (FIXED - RIGHT SIDE) -->
+        {% if user_input %}
+            <div class="message user">
+                <p>{{ user_input }}</p>
+            </div>
+        {% endif %}
+
+        <!-- BOT RESPONSE -->
+        {% if response %}
+            <div class="message bot">
+                {% if response|length > 0 %}
+                    <p>{{ response|safe }}</p>
+                {% else %}
+                    <div class="code-block">{{ response|safe }}</div>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        <!-- LOADER -->
+        <div class="loader" id="loader"></div>
+
+    </div>
+
+    <!-- INPUT FORM -->
+    <form method="POST" class="chat-input" onsubmit="showLoader()">
+        {% csrf_token %}
+        <input type="text" name="user_input" placeholder="Type your message..." required>
+        <button type="submit">Send</button>
+    </form>
+
+</div>
+
+<script>
+    function showLoader() {
+        document.getElementById('loader').style.display = 'block';
+    }
+
+    function hideLoader() {
+        document.getElementById('loader').style.display = 'none';
+    }
+
+    setTimeout(hideLoader, 3000);
+</script>
+
+</body>
+</html>
