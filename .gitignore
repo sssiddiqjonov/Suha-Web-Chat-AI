@@ -8,6 +8,13 @@ build/
 develop-eggs/
 dist/
 downloads/
+*.log
+local_settings.py
+db.sqlite3
+media
+
+# Environment variables
+.env
 eggs/
 .eggs/
 lib/
