@@ -23,6 +23,3 @@ def get_chatbot_response(user_input):
     
     return chat_completion.choices[0].message.content
 
-# 3. Usage
-response = get_chatbot_response("Explain quantum computing in one sentence.")
-print(response)
